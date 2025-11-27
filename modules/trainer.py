@@ -2,7 +2,7 @@ from typing import Mapping, Optional, Iterator, Any
 import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
-from tqdm.notebook import tqdm
+from tqdm.auto import tqdm
 
 
 class Trainer(nn.Module):
@@ -38,9 +38,19 @@ class Trainer(nn.Module):
         model = self.model.to(self.device)
         self._optimizer_to(self.optimizer, self.device)
 
-        for epoch in tqdm(range(epochs)):
+                # epoch loop with outer tqdm
+        for epoch in tqdm(range(epochs), desc="Epochs", disable=silent):
             model.train()
-            for data, target in dataloader:
+
+            # inner tqdm over batches so you see batch progress + loss
+            batch_bar = tqdm(
+                dataloader,
+                desc=f"Epoch {epoch + 1}/{epochs}",
+                leave=False,
+                disable=silent,
+            )
+
+            for data, target in batch_bar:
                 x = data.to(self.device)
                 y = target.to(self.device)
 
@@ -50,7 +60,11 @@ class Trainer(nn.Module):
                 loss.backward()
                 self.optimizer.step()
 
-            yield model  
+                # show current loss in the batch progress bar
+                batch_bar.set_postfix(loss=float(loss.detach().cpu()))
+
+            # yield model after each epoch (unchanged behaviour)
+            yield model 
             
     def _optimizer_to(self, optim_: torch.optim.Optimizer, device: torch.device) -> None:
         """Moves optimizer state tensors to the device."""
