@@ -6,7 +6,7 @@ from tqdm.notebook import tqdm
 
 
 class Trainer(nn.Module):
-    """Simplified trainer for classification models using PyTorch."""
+    """ Trainer for classification models using PyTorch."""
 
     def __init__(
         self,
