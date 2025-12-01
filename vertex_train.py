@@ -45,7 +45,6 @@ set_seed(1)
 
 def main():
     print("Using device:", DEVICE)   
-    # same variables as in your sandbox
     choice = 1  # 1,2,3
     freezeLayer = True
     pretrained_Weights = True
@@ -262,7 +261,7 @@ def main():
         blob.upload_from_filename(weights_path)
         print(f"[GCS] Uploaded weights → gs://{bucket_name}/{model_prefix}/model_weights.pth")
         
-       # #### CREATE TORCHSERVE .mar ARCHIVE AND UPLOAD TO GCS ####
+       # #### CREATED TORCHSERVE .mar ARCHIVE AND UPLOAD TO GCS ####
 
         mar_dir = "model_store"
 

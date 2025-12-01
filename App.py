@@ -102,7 +102,7 @@ with st.sidebar:
 # MAIN PAGE
 # =========================
 st.title("Intel Image Classifier")
-st.write("Upload an image and get a prediction from your deployed Vertex AI endpoint.")
+st.write("Vertex AI")
 
 left, right = st.columns([2.2, 1], gap="large")
 
